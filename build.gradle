@@ -1,0 +1,49 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'io.qameta.allure' version '2.11.2'
+}
+[compileJava, compileTestJava]*.options*.encoding = "UTF-8"
+
+group = 'ru.egor.qa.selenide_ui_project'
+version = '1.0-SNAPSHOT'
+
+
+def selenideVersion = '6.19.0',
+    junitJupiterVersion = '5.10.0',
+    allureVersion = '2.24.0'
+
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    api 'org.apache.commons:commons-math3:3.6.1'
+
+    testImplementation(
+            //JUnit
+            "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}",
+            "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}",
+            //Selenide
+            "com.codeborne:selenide:${selenideVersion}",
+            //Allure
+            "io.qameta.allure:allure-selenide:${allureVersion}",
+            "io.qameta.allure:allure-junit5:${allureVersion}",
+            "io.qameta.allure:allure-assertj:${allureVersion}",
+
+            'org.aeonbits.owner:owner:1.0.12',
+            'org.slf4j:slf4j-simple:2.0.7'
+
+    )
+}
+test {
+    useJUnitPlatform()
+    scanForTestClasses = false
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+        exceptionFormat "full"
+        showStandardStreams = true //это ставит ур логирования "debug"
+    }
+}
